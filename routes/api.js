@@ -3,6 +3,7 @@ const router = express.Router()
 const parseString = require('xml2js').parseString;
 const request = require("request");
 const rp = require('request-promise')
+const async = require('async')
 const FFKEY = require('../config/food2forkAPI')
 const SUPERMARKETKEY = require('../config/supermarketAPI')
 
@@ -14,6 +15,7 @@ if (!mongoose.connection.db) {
 }
 const db = mongoose.connection
 let stores = []
+let products=[]
 
 router.get('/getRecipes', function (req, res, next) {
     const options = {
@@ -33,8 +35,7 @@ router.get('/getRecipes', function (req, res, next) {
     });
 })
 
-router.post('/searchForIngredient', function (req, res, next) {
-    const resultPromises1 = []
+router.post('/findStores', function (req, res, next) {
     const options = {
         method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/StoresByCityState',
@@ -44,45 +45,42 @@ router.post('/searchForIngredient', function (req, res, next) {
             SelectedState: req.body.SelectedState
         }
     };
-    const p1 = rp(options)
-        .catch(function (err) {
-            res.send(err)
-        })
-    resultPromises1.push(p1)
-    Promise.all(resultPromises1)
-        .then(function (resp) {
-            parseString(resp, function (err, result) {
-                result.ArrayOfStore.Store.forEach(function (store) {
-                    stores.push(store)
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error)
+        parseString(body, function (err, result) {
+            result.ArrayOfStore.Store.forEach(function (store) {
+                stores.push({
+                    name: store.Storename,
+                    address: store.Address,
+                    city: store.City,
+                    state: store.State,
+                    zip: store.Zip,
+                    storeID: store.StoreId
                 })
-                const resultPromises = [];
-                stores.forEach(function (store) {
-                    const options = {
-                        method: 'POST',
-                        url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
-                        form: {
-                            APIKEY: SUPERMARKETKEY.key,
-                            StoreId: store.StoreId[0],
-                            ItemName: req.body.ItemName
-                        }
-                    };
-                    const p = rp(options)
-                        .catch(function (err) {
-                            res.send(err)
-                        });
-
-                    resultPromises.push(p);
-                });
-
-                Promise.all(resultPromises)
-                    .then(function (resp) {
-                        parseString(resp, function (err, result) {
-                            const results = result.ArrayOfProduct.Product
-                            res.json({stores: results})
-                        })
-                    });
             })
+            res.json(stores)
         })
+    })
+})
+router.post('/findIngredient',function(req,res,next){
+    const options = {
+        method: 'POST',
+        url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
+        form: {
+            APIKEY: SUPERMARKETKEY.key,
+            StoreId: req.body.StoreId,
+            ItemName: req.body.ItemName
+        }
+    };
+    request(options,function(error,response,body){
+        if(error) throw new Error(error)
+        parseString(body, function (err, result) {
+            result.ArrayOfProduct.Product.forEach(function(product){
+                products.push({name:product.Itemname,image:product.ItemImage, aisle:product.AisleNumber})
+            })
+            res.json(products)
+        })
+    })
 })
 
 module.exports = router

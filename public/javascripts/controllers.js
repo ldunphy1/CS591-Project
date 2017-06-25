@@ -25,19 +25,33 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
 
                 })
         }
-        $scope.getStores = function () {
+        $scope.findStores = function () {
             let config = {
                 method: 'post',
-                url: 'http://localhost:3000/api/searchForIngredient/',
+                url: 'http://localhost:3000/api/findStores/',
                 data: {
                     SelectedCity: $scope.city,
-                    SelectedState: $scope.state,
-                    ItemName: $scope.ingredient
+                    SelectedState: $scope.state
                 }
             }
             $http(config)
                 .then(function (response) {
                     $scope.stores = response.data
+
+                })
+        }
+        $scope.findIngredient = function () {
+            let config = {
+                method: 'post',
+                url: 'http://localhost:3000/api/findIngredient/',
+                data: {
+                    StoreId: $scope.storeID,
+                    ItemName: $scope.ingredient
+                }
+            }
+            $http(config)
+                .then(function (response) {
+                    $scope.products = response.data
 
                 })
         }

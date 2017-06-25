@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^2.4.1",
     "body-parser": "~1.13.2",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
