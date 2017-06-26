@@ -1,6 +1,5 @@
 # Recipe Shopper App
 Browse top-rated recipes, then search for the ingredients at nearby grocery stores.
-## Running
 ### Prerequisites:
 * mongodb & node both need to be installed on your machine
 ### To run:
