@@ -18,10 +18,54 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
 
             }
             $scope.getRecipes = function () {
-                $http.get('api/getRecipes')
+                let config = {
+                    method: 'post',
+                    url: 'http://localhost:3000/api/getRecipes/',
+                    data: {
+                        page: $scope.page = 1,
+                        q: $scope.item
+                    }
+                }
+                $http(config)
                     .then(function (response) {
                         $scope.recipes = response.data
-
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            }
+            $scope.nextRecipes = function () {
+                let config = {
+                    method: 'post',
+                    url: 'http://localhost:3000/api/getRecipes/',
+                    data: {
+                        page: $scope.page + 1,
+                        q: $scope.item
+                    }
+                }
+                $http(config)
+                    .then(function (response) {
+                        $scope.recipes = response.data
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            }
+            $scope.prevRecipes = function () {
+                let config = {
+                    method: 'post',
+                    url: 'http://localhost:3000/api/getRecipes/',
+                    data: {
+                        page: $scope.page - 1,
+                        q: $scope.item
+                    }
+                }
+                $http(config)
+                    .then(function (response) {
+                        $scope.recipes = response.data
+                    })
+                    .catch(function (error) {
+                        console.log(error)
                     })
             }
             $scope.findStores = function () {
@@ -36,10 +80,10 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                 $http(config)
                     .then(function (response) {
                         $scope.stores = response.data
-                        $scope.storeError=null
+                        $scope.storeError = null
                     })
                     .catch(function (error) {
-                        $scope.storeError = "Invalid input"
+                        $scope.storeError = "City or State NOT FOUND"
                     })
             }
             $scope.findIngredient = function () {
@@ -54,7 +98,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                 $http(config)
                     .then(function (response) {
                         $scope.products = response.data
-                        $scope.productError=null
+                        $scope.productError = null
 
                     })
                     .catch(function (error) {

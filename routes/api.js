@@ -16,11 +16,15 @@ if (!mongoose.connection.db) {
 const db = mongoose.connection
 
 
-router.get('/getRecipes', function (req, res, next) {
+router.post('/getRecipes', function (req, res, next) {
     const options = {
         method: 'POST',
         url: 'http://food2fork.com/api/search',
-        form: {key: FFKEY.key}
+        form: {
+            key: FFKEY.key,
+            page: req.body.page,
+            q: req.body.q
+        }
     };
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
@@ -85,7 +89,7 @@ router.post('/findIngredient', function (req, res, next) {
         parseString(body, function (err, result) {
             try {
                 result.ArrayOfProduct.Product.forEach(function (product) {
-                    if (product.Itemname[0]==='NOITEM') throw new Error(error)
+                    if (product.Itemname[0] === 'NOITEM') throw new Error(error)
                     products.push(
                         {
                             name: product.Itemname[0],
@@ -99,7 +103,6 @@ router.post('/findIngredient', function (req, res, next) {
                 res.statusCode = 302
                 res.json(products)
             }
-
         })
     })
 })

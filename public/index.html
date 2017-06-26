@@ -39,26 +39,36 @@
             <button class="btn btn-primary" ng-click="logout()">Log out</button>
         </div>
     </div>
-    <div class="row" style="padding-left: 100px">
+    <div class="row" style="padding-left: 15px">
         <div ng-show="authorized">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <button class="btn" ng-click="getRecipes()">Get Recipes</button>
+                    <input type="text" ng-model="item" placeholder="Enter Ingredient">
+                    <label style="font-size: small">(separate ingredients by comma)</label>
                     <div class="row">
-                        <button class="btn" ng-click="getRecipes()">Get Recipes</button>
+                        <ul class="pager" style="padding-left: 15px">
+                            <li class="previous"><a href="#" ng-click="prevRecipes()">Previous</a></li>
+                            <li class="next"><a href="#" ng-click="nextRecipes()">Next</a></li>
+                        </ul>
                     </div>
-                    <div class="row" style="padding-top: 5px">Sorted by Rating</div>
                 </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <button class="btn" ng-click="findStores()" ng-disabled="(!city) || (!state)">Get Stores</button>
-                        <input type="text" ng-model="city" placeholder="Enter City" required>
-                        <input type="text" ng-model="state" placeholder="Enter State" required>
+                <div class="col-md-4">
+                    <input type="text" ng-model="city" placeholder="Enter City" required>
+                    <input type="text" ng-model="state" placeholder="Enter State" required>
+                    <div class="row" style="padding-left: 15px; padding-top:5px">
+                        <button class="btn" ng-click="findStores()" ng-disabled="(!city) || (!state)">Get Stores
+                        </button>
                         <label style="color: red">{{storeError}}</label>
                     </div>
-                    <div class="row" style="padding-top: 5px">
-                        <button class="btn" ng-click="findIngredient()" ng-disabled="(!storeID)||(!ingredient)">Find Ingredient</button>
-                        <input type="text" ng-model="storeID" placeholder="Enter Store ID" required>
-                        <input type="text" ng-model="ingredient" placeholder="Enter Ingredient" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" ng-model="storeID" placeholder="Enter Store ID" required>
+                    <input type="text" ng-model="ingredient" placeholder="Enter Ingredient" required>
+                    <div class="row" style="padding-left: 15px; padding-top:5px">
+                        <button class="btn" ng-click="findIngredient()" ng-disabled="(!storeID)||(!ingredient)">
+                            Find Ingredient
+                        </button>
                         <label style="color: red">{{productError}}</label>
                     </div>
                 </div>
@@ -66,21 +76,25 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
                     <a target="_blank" ng-href="{{recipe.url}}">{{recipe.title}}</a>
                 </li>
             </ul>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
                     {{store.name}}
                     <br/>{{store.address}}
                     <br/>{{store.city}}, {{store.state}} {{store.zip}}
-                    <br/>{{store.storeID}}
+                    <br/>Store ID: {{store.storeID}}
                 </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="product in products">
                     {{product.name}}
                     <br/><img ng-src="{{product.image}}">
