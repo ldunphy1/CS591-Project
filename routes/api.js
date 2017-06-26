@@ -14,8 +14,7 @@ if (!mongoose.connection.db) {
     mongoose.connect('mongodb://localhost/cs591')
 }
 const db = mongoose.connection
-let stores = []
-let products=[]
+
 
 router.get('/getRecipes', function (req, res, next) {
     const options = {
@@ -36,6 +35,7 @@ router.get('/getRecipes', function (req, res, next) {
 })
 
 router.post('/findStores', function (req, res, next) {
+    const stores = []
     const options = {
         method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/StoresByCityState',
@@ -48,21 +48,29 @@ router.post('/findStores', function (req, res, next) {
     request(options, function (error, response, body) {
         if (error) throw new Error(error)
         parseString(body, function (err, result) {
-            result.ArrayOfStore.Store.forEach(function (store) {
-                stores.push({
-                    name: store.Storename,
-                    address: store.Address,
-                    city: store.City,
-                    state: store.State,
-                    zip: store.Zip,
-                    storeID: store.StoreId
+            try {
+                result.ArrayOfStore.Store.forEach(function (store) {
+                    stores.push({
+                        name: store.Storename[0],
+                        address: store.Address[0],
+                        city: store.City[0],
+                        state: store.State[0],
+                        zip: store.Zip[0],
+                        storeID: store.StoreId[0]
+                    })
                 })
-            })
-            res.json(stores)
+                res.json(stores)
+            }
+            catch (error) {
+                res.statusCode = 302
+                res.json(stores)
+            }
+
         })
     })
 })
-router.post('/findIngredient',function(req,res,next){
+router.post('/findIngredient', function (req, res, next) {
+    const products = []
     const options = {
         method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
@@ -72,13 +80,26 @@ router.post('/findIngredient',function(req,res,next){
             ItemName: req.body.ItemName
         }
     };
-    request(options,function(error,response,body){
-        if(error) throw new Error(error)
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error)
         parseString(body, function (err, result) {
-            result.ArrayOfProduct.Product.forEach(function(product){
-                products.push({name:product.Itemname,image:product.ItemImage, aisle:product.AisleNumber})
-            })
-            res.json(products)
+            try {
+                result.ArrayOfProduct.Product.forEach(function (product) {
+                    if (product.Itemname[0]==='NOITEM') throw new Error(error)
+                    products.push(
+                        {
+                            name: product.Itemname[0],
+                            image: product.ItemImage[0],
+                            aisle: product.AisleNumber[0]
+                        })
+                })
+                res.json(products)
+            }
+            catch (error) {
+                res.statusCode = 302
+                res.json(products)
+            }
+
         })
     })
 })

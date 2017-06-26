@@ -1,61 +1,68 @@
 angular.module('cs411', ['ngRoute', 'ngCookies'])
     .controller('cs411ctrl', function ($scope, $http, $cookies) {
-        $scope.initApp = function () {
-            $scope.authorized = false
-            let authCookie = $cookies.get('authStatus')
-            $scope.authorized = !!authCookie
-        }
-        $scope.logout = function () {
-            $http.get('/auth/logout')
-                .then(function (response) {
-                    $scope.authorized = false
-                })
-        }
-        $scope.doTwitterAuth = function () {
-            let openUrl = '/auth/twitter/'
-            //Total hack, this:
-            window.location.replace(openUrl)
-            $scope.authorized = true
-
-        }
-        $scope.getRecipes = function () {
-            $http.get('api/getRecipes')
-                .then(function (response) {
-                    $scope.recipes = response.data
-
-                })
-        }
-        $scope.findStores = function () {
-            let config = {
-                method: 'post',
-                url: 'http://localhost:3000/api/findStores/',
-                data: {
-                    SelectedCity: $scope.city,
-                    SelectedState: $scope.state
-                }
+            $scope.initApp = function () {
+                $scope.authorized = false
+                let authCookie = $cookies.get('authStatus')
+                $scope.authorized = !!authCookie
             }
-            $http(config)
-                .then(function (response) {
-                    $scope.stores = response.data
-
-                })
-        }
-        $scope.findIngredient = function () {
-            let config = {
-                method: 'post',
-                url: 'http://localhost:3000/api/findIngredient/',
-                data: {
-                    StoreId: $scope.storeID,
-                    ItemName: $scope.ingredient
-                }
+            $scope.logout = function () {
+                $http.get('/auth/logout')
+                    .then(function (response) {
+                        $scope.authorized = false
+                    })
             }
-            $http(config)
-                .then(function (response) {
-                    $scope.products = response.data
+            $scope.doTwitterAuth = function () {
+                let openUrl = '/auth/twitter/'
+                //Total hack, this:
+                window.location.replace(openUrl)
 
-                })
+            }
+            $scope.getRecipes = function () {
+                $http.get('api/getRecipes')
+                    .then(function (response) {
+                        $scope.recipes = response.data
+
+                    })
+            }
+            $scope.findStores = function () {
+                let config = {
+                    method: 'post',
+                    url: 'http://localhost:3000/api/findStores/',
+                    data: {
+                        SelectedCity: $scope.city,
+                        SelectedState: $scope.state,
+                    }
+                }
+                $http(config)
+                    .then(function (response) {
+                        $scope.stores = response.data
+                        $scope.storeError=null
+                    })
+                    .catch(function (error) {
+                        $scope.storeError = "Invalid input"
+                    })
+            }
+            $scope.findIngredient = function () {
+                let config = {
+                    method: 'post',
+                    url: 'http://localhost:3000/api/findIngredient/',
+                    data: {
+                        StoreId: $scope.storeID,
+                        ItemName: $scope.ingredient
+                    }
+                }
+                $http(config)
+                    .then(function (response) {
+                        $scope.products = response.data
+                        $scope.productError=null
+
+                    })
+                    .catch(function (error) {
+                        $scope.productError = "Invalid input"
+                    })
+            }
         }
-    })
+    )
     .config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider

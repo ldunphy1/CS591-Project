@@ -50,14 +50,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <button class="btn" ng-click="findStores()">Get Stores</button>
-                        <input type="text" ng-model="city" placeholder="Enter City">
-                        <input type="text" ng-model="state" placeholder="Enter State">
+                        <button class="btn" ng-click="findStores()" ng-disabled="(!city) || (!state)">Get Stores</button>
+                        <input type="text" ng-model="city" placeholder="Enter City" required>
+                        <input type="text" ng-model="state" placeholder="Enter State" required>
+                        <label style="color: red">{{storeError}}</label>
                     </div>
                     <div class="row" style="padding-top: 5px">
-                        <button class="btn" ng-click="findIngredient()">Find Ingredient</button>
-                        <input type="text" ng-model="storeID" placeholder="Enter Store ID">
-                        <input type="text" ng-model="ingredient" placeholder="Enter Ingredient">
+                        <button class="btn" ng-click="findIngredient()" ng-disabled="(!storeID)||(!ingredient)">Find Ingredient</button>
+                        <input type="text" ng-model="storeID" placeholder="Enter Store ID" required>
+                        <input type="text" ng-model="ingredient" placeholder="Enter Ingredient" required>
+                        <label style="color: red">{{productError}}</label>
                     </div>
                 </div>
             </div>
@@ -67,7 +69,7 @@
         <div class="col-md-6">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
-                    <a target="_blank" ng-href={{recipe.url}}">{{recipe.title}}</a>
+                    <a target="_blank" ng-href="{{recipe.url}}">{{recipe.title}}</a>
                 </li>
             </ul>
         </div>
