@@ -1,29 +1,36 @@
 angular.module('cs411', ['ngRoute', 'ngCookies'])
     .controller('cs411ctrl', function ($scope, $http, $cookies) {
+
+        //initialize app and check whether user has logged in
             $scope.initApp = function () {
                 $scope.authorized = false
                 let authCookie = $cookies.get('authStatus')
                 $scope.authorized = !!authCookie
             }
+
+        //log user out
             $scope.logout = function () {
                 $http.get('/auth/logout')
                     .then(function (response) {
                         $scope.authorized = false
                     })
             }
+
+        //authorize user with Twitter
             $scope.doTwitterAuth = function () {
                 let openUrl = '/auth/twitter/'
-                //Total hack, this:
                 window.location.replace(openUrl)
 
             }
+
+        //gets 1st page of recipes based on user input
             $scope.getRecipes = function () {
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/getRecipes/',
                     data: {
-                        page: $scope.page = 1,
-                        q: $scope.item
+                        page: $scope.page = 1,      //initializes page # to 1
+                        q: $scope.item              //retrieves user input
                     }
                 }
                 $http(config)
@@ -34,13 +41,15 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                         console.log(error)
                     })
             }
+
+            //gets next page of recipes based on initial parameters
             $scope.nextRecipes = function () {
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/getRecipes/',
                     data: {
-                        page: $scope.page + 1,
-                        q: $scope.item
+                        page: $scope.page + 1,      //increments page #
+                        q: $scope.item              //retrieves inital parameter
                     }
                 }
                 $http(config)
@@ -51,13 +60,15 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                         console.log(error)
                     })
             }
+
+            //goes back to previous page of results
             $scope.prevRecipes = function () {
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/getRecipes/',
                     data: {
-                        page: $scope.page - 1,
-                        q: $scope.item
+                        page: $scope.page - 1,      //decrements page #
+                        q: $scope.item              //retrieves initial parameter
                     }
                 }
                 $http(config)
@@ -68,13 +79,15 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                         console.log(error)
                     })
             }
+
+            //gets stores based on user input
             $scope.findStores = function () {
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/findStores/',
                     data: {
-                        SelectedCity: $scope.city,
-                        SelectedState: $scope.state,
+                        SelectedCity: $scope.city,      //retrieves user input
+                        SelectedState: $scope.state,    //retrieves user input
                     }
                 }
                 $http(config)
@@ -86,13 +99,15 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                         $scope.storeError = "City or State NOT FOUND"
                     })
             }
+
+            //gets ingredients based on user input
             $scope.findIngredient = function () {
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/findIngredient/',
                     data: {
-                        StoreId: $scope.storeID,
-                        ItemName: $scope.ingredient
+                        StoreId: $scope.storeID,        //retrives user input
+                        ItemName: $scope.ingredient     //retrieves user input
                     }
                 }
                 $http(config)

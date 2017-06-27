@@ -30,6 +30,8 @@
 <div ng-controller="cs411ctrl" ng-init="initApp()">
     <img src="./images/master-logo.gif"><span class="largeText">  Department of Computer Science</span>
     <h2>Welcome to Recipe Shopper</h2>
+
+    <!--log in or log out, based on authorization status-->
     <div class="row" style="padding-left: 15px">
         <div ng-hide="authorized" style="padding-top: 20px">
             <button type="submit" class="btn btn-primary" ng-click="doTwitterAuth()">Log in with Twitter</button>
@@ -39,9 +41,13 @@
             <button class="btn btn-primary" ng-click="logout()">Log out</button>
         </div>
     </div>
+
+    <!--buttons & input fields-->
     <div class="row" style="padding-left: 15px">
         <div ng-show="authorized">
             <div class="row">
+
+                <!--Recipe Inputs-->
                 <div class="col-md-4">
                     <button class="btn" ng-click="getRecipes()">Get Recipes</button>
                     <input type="text" ng-model="item" placeholder="Enter Ingredient">
@@ -53,6 +59,8 @@
                         </ul>
                     </div>
                 </div>
+
+                <!--Store Inputs-->
                 <div class="col-md-4">
                     <input type="text" ng-model="city" placeholder="Enter City" required>
                     <input type="text" ng-model="state" placeholder="Enter State" required>
@@ -62,6 +70,8 @@
                         <label style="color: red">{{storeError}}</label>
                     </div>
                 </div>
+
+                <!--Ingredient Inputs-->
                 <div class="col-md-4">
                     <input type="text" ng-model="storeID" placeholder="Enter Store ID" required>
                     <input type="text" ng-model="ingredient" placeholder="Enter Ingredient" required>
@@ -75,7 +85,11 @@
             </div>
         </div>
     </div>
+
+    <!--Results-->
     <div class="row">
+
+        <!--Recipes-->
         <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
@@ -83,6 +97,8 @@
                 </li>
             </ul>
         </div>
+
+        <!--Stores-->
         <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
@@ -93,6 +109,8 @@
                 </li>
             </ul>
         </div>
+
+        <!--Ingredients-->
         <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="product in products">
