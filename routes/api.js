@@ -27,7 +27,7 @@ const db = mongoose.connection
  "social_rank":100,
  "publisher_url":"http://thepioneerwoman.com"}, ...]}
  */
-router.post('/getRecipes', function (req, res, next) {
+router.post('/getRecipes', authorized, function (req, res, next) {
     const options = {
         method: 'POST',
         url: 'http://food2fork.com/api/search',
@@ -67,7 +67,7 @@ router.post('/getRecipes', function (req, res, next) {
  </Store>
  </ArrayOfStore>
  */
-router.post('/findStores', function (req, res, next) {
+router.post('/findStores', authorized, function (req, res, next) {
     const stores = []
     const options = {
         method: 'POST',
@@ -103,7 +103,7 @@ router.post('/findStores', function (req, res, next) {
 
             //error-handling
             catch (error) {
-                res.statusCode = 500
+                res.statusCode = 502
                 res.json(stores)
             }
         })
@@ -123,7 +123,7 @@ router.post('/findStores', function (req, res, next) {
     </Product>
 </ArrayOfProduct>
  */
-router.post('/findIngredient', function (req, res, next) {
+router.post('/findIngredient',authorized, function (req, res, next) {
     const products = []
     const options = {
         method: 'POST',
