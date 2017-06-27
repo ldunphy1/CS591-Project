@@ -16,9 +16,7 @@ if (!mongoose.connection.db) {
     mongoose.connect('mongodb://localhost/cs591')
 }
 const db = mongoose.connection
-
 const Schema = mongoose.Schema
-
 const user = new Schema({
     username    : {
         type    : String,
@@ -34,14 +32,6 @@ const user = new Schema({
     },
     twitterID: String
 })
-
-//Set up the findOrCreate plugin
-//user.plugin(findOrCreate)
-
-/*
- Add a method to the schema that takes a plaintext password and stores the hashed
- value, along with the salt, in the database
- */
 
 user.methods.setPassword = function (password) {
     this.passwordSalt = crypto.randomBytes(16).toString('hex')

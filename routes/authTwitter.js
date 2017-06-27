@@ -8,13 +8,10 @@ const twitterConfig = require('../config/twitter')
 //Connect to user database
 //No reason not to use the crypto version of the user model (because crypto)
 const User = require('../models/UserWithCrypto')
-
-
 const passport = require('passport')
 const TwitterStrategy = require('passport-twitter').Strategy
 
-//Set up an options doc for the strategy.
-//
+//Set up an options doc for the strategy
 const passportOptions = {
     consumerKey: twitterConfig.CONSUMER_KEY,
     consumerSecret: twitterConfig.CONSUMER_SECRET,
@@ -59,7 +56,6 @@ passport.deserializeUser(function (id, done) {
         done(err, user)
     })
 })
-
 
 router.get('/success', function (req, res, next) {
     res.redirect('/')
