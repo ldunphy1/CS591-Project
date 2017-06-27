@@ -15,7 +15,7 @@ const db = mongoose.connection
 
 //uses Food2Fork API to return recipes to use in the form of a JSON object
 /*
-**SAMPLE RESPONSE**
+ **SAMPLE RESPONSE**
  {"count":30,
  "recipes":[{
  "publisher":"The Pioneer Woman",
@@ -42,13 +42,19 @@ router.post('/getRecipes', authorized, function (req, res, next) {
         const recipeList = JSON.parse(body)
         const recipeLinks = []
 
-        //iterate through recipes, adds title & source url to recipeLinks array
-        recipeList.recipes.forEach(function (recipe) {
-            recipeLinks.push({title: recipe.title, url: recipe.source_url})
-        })
+        //check for no results
+        if (recipeList.count == 0) {
+            res.json({message: "No results"})
+        }
+        else {
+            //iterate through recipes, adds title & source url to recipeLinks array
+            recipeList.recipes.forEach(function (recipe) {
+                recipeLinks.push({title: recipe.title, url: recipe.source_url})
+            })
 
-        //send recipe info to front end
-        res.json(recipeLinks)
+            //send recipe info to front end
+            res.json(recipeLinks)
+        }
     });
 })
 
@@ -101,7 +107,7 @@ router.post('/findStores', authorized, function (req, res, next) {
                 res.json(stores)
             }
 
-            //error-handling
+                //error-handling
             catch (error) {
                 res.statusCode = 502
                 res.json(stores)
@@ -112,18 +118,18 @@ router.post('/findStores', authorized, function (req, res, next) {
 
 //uses Supermarket API to return search results for Products (limit 20 Items)
 /*
-**SAMPLE RESPONSE**
+ **SAMPLE RESPONSE**
  <ArrayOfProduct>
-    <Product>
-        <Itemname>Gerber 100% Apple Juice - 32 Fl. Oz.</Itemname>
-        <ItemDescription>Made from freshly pressed apples...</ItemDescription>
-        <ItemCategory>Baby</ItemCategory>
-        <ItemID>26315</ItemID><ItemImage>http://smapistorage.blob.core.windows.net/thumbimages/165020004_100x100.jpg</ItemImage>
-        <AisleNumber>Aisle:10</AisleNumber>
-    </Product>
-</ArrayOfProduct>
+ <Product>
+ <Itemname>Gerber 100% Apple Juice - 32 Fl. Oz.</Itemname>
+ <ItemDescription>Made from freshly pressed apples...</ItemDescription>
+ <ItemCategory>Baby</ItemCategory>
+ <ItemID>26315</ItemID><ItemImage>http://smapistorage.blob.core.windows.net/thumbimages/165020004_100x100.jpg</ItemImage>
+ <AisleNumber>Aisle:10</AisleNumber>
+ </Product>
+ </ArrayOfProduct>
  */
-router.post('/findIngredient',authorized, function (req, res, next) {
+router.post('/findIngredient', authorized, function (req, res, next) {
     const products = []
     const options = {
         method: 'POST',
@@ -158,7 +164,7 @@ router.post('/findIngredient',authorized, function (req, res, next) {
                 res.json(products)
             }
 
-            //error-handling
+                //error-handling
             catch (error) {
                 res.statusCode = 302
                 res.json(products)

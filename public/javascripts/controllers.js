@@ -25,6 +25,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
 
         //gets 1st page of recipes based on user input
             $scope.getRecipes = function () {
+                $scope.recipeMessage=null
                 let config = {
                     method: 'post',
                     url: 'http://localhost:3000/api/getRecipes/',
@@ -36,6 +37,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                 $http(config)
                     .then(function (response) {
                         $scope.recipes = response.data
+                        $scope.recipeMessage=response.data.message
                     })
                     .catch(function (error) {
                         console.log(error)

@@ -93,6 +93,7 @@
         <div class="col-md-4">
             <ul class="list-group">
                 <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
+                    {{recipeMessage}}
                     <a target="_blank" ng-href="{{recipe.url}}">{{recipe.title}}</a>
                 </li>
             </ul>
