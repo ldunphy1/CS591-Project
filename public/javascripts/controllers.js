@@ -100,6 +100,10 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
                     })
             }
 
+            $scope.copyID=function(storeID){
+                $scope.storeID=storeID
+            }
+
             //gets ingredients based on user input
             $scope.findIngredient = function () {
                 let config = {

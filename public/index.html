@@ -50,7 +50,7 @@
                 <!--Recipe Inputs-->
                 <div class="col-md-4">
                     <button class="btn" ng-click="getRecipes()">Get Recipes</button>
-                    <input type="text" ng-model="item" placeholder="Enter Ingredient">
+                    <input type="text" ng-model="item" placeholder="Enter Ingredient(s)"> (Optional)
                     <label style="font-size: small">(separate ingredients by comma)</label>
                     <div class="row">
                         <ul class="pager" style="padding-left: 15px">
@@ -73,12 +73,12 @@
 
                 <!--Ingredient Inputs-->
                 <div class="col-md-4">
-                    <input type="text" ng-model="storeID" placeholder="Enter Store ID" required>
+                    <input type="text" ng-model="storeID" placeholder="**Store ID" readonly>
                     <input type="text" ng-model="ingredient" placeholder="Enter Ingredient" required>
                     <div class="row" style="padding-left: 15px; padding-top:5px">
                         <button class="btn" ng-click="findIngredient()" ng-disabled="(!storeID)||(!ingredient)">
                             Find Ingredient
-                        </button>
+                        </button> **get from 'Find Stores'
                         <label style="color: red">{{productError}}</label>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                     {{store.name}}
                     <br/>{{store.address}}
                     <br/>{{store.city}}, {{store.state}} {{store.zip}}
-                    <br/>Store ID: {{store.storeID}}
+                    <br/>Store ID: <a ng-click="copyID(store.storeID)" style="cursor:pointer">{{store.storeID}}</a><label style="font-size: small; padding-left: 5px">Click to Copy!</label>
                 </li>
             </ul>
         </div>
