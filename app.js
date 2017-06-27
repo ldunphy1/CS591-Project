@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 //Pass anything other than mounted routes to Angular
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'this is not a secret'}));
+app.use(session({resave: true, saveUninitialized: true, secret: 'this is not a secret'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
