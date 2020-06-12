@@ -13,7 +13,7 @@ if (!mongoose.connection.db) {
 }
 const db = mongoose.connection
 
-//uses Food2Fork API to return recipes to use in the form of a JSON object
+//uses Spoonacular API to return recipes to use in the form of a JSON object
 /*
  **SAMPLE RESPONSE**
  {"count":30,
