@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 const parseString = require('xml2js').parseString;
 const request = require("request");
-const FFKEY = require('../config/food2forkAPI')
-const SUPERMARKETKEY = require('../config/supermarketAPI')
+const FFKEY = require('../config/spoonacularAPI')
+//const SUPERMARKETKEY = require('../config/supermarketAPI')
 
 //Helper for authorization
 const authorized = require('./authCheck')
@@ -30,7 +30,7 @@ const db = mongoose.connection
 router.post('/getRecipes', authorized, function (req, res, next) {
     const options = {
         method: 'POST',
-        url: 'http://food2fork.com/api/search',
+        url: 'https://api.spoonacular.com/recipes/search',
         form: {
             key: FFKEY.key,         //API key
             page: req.body.page,    //indicates page # of results (either 1 or 2)
@@ -73,7 +73,7 @@ router.post('/getRecipes', authorized, function (req, res, next) {
  </Store>
  </ArrayOfStore>
  */
-router.post('/findStores', authorized, function (req, res, next) {
+/*router.post('/findStores', authorized, function (req, res, next) {
     const stores = []
     const options = {
         method: 'POST',
@@ -114,7 +114,7 @@ router.post('/findStores', authorized, function (req, res, next) {
             }
         })
     })
-})
+})*/
 
 //uses Supermarket API to return search results for Products (limit 20 Items)
 /*
@@ -129,7 +129,7 @@ router.post('/findStores', authorized, function (req, res, next) {
  </Product>
  </ArrayOfProduct>
  */
-router.post('/findIngredient', authorized, function (req, res, next) {
+/*router.post('/findIngredient', authorized, function (req, res, next) {
     const products = []
     const options = {
         method: 'POST',
@@ -171,6 +171,6 @@ router.post('/findIngredient', authorized, function (req, res, next) {
             }
         })
     })
-})
+})*/
 
 module.exports = router

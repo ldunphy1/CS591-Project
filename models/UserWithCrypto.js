@@ -29,8 +29,8 @@ const user = new Schema({
     name: {
         type    : String,
         required: true
-    },
-    twitterID: String
+    }/*,
+    twitterID: String*/
 })
 
 user.methods.setPassword = function (password) {

@@ -5,7 +5,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
             $scope.initApp = function () {
                 $scope.authorized = false
                 let authCookie = $cookies.get('authStatus')
-                $scope.authorized = !!authCookie
+                $scope.authorized = true//!!authCookie
             }
 
         //log user out
@@ -18,8 +18,8 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
 
         //authorize user with Twitter
             $scope.doTwitterAuth = function () {
-                let openUrl = '/auth/twitter/'
-                window.location.replace(openUrl)
+                /* let openUrl = '/auth/twitter/'
+                window.location.replace(openUrl) */
 
             }
 

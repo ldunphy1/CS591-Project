@@ -16,7 +16,7 @@ const flash = require('connect-flash')
 //and flash requires session. We'll also want passport-session.
 
 const api = require('./routes/api')
-const auth = require('./routes/authTwitter')
+//const auth = require('./routes/authTwitter')
 const app = express()
 
 // view engine setup
@@ -36,7 +36,7 @@ app.use(passport.session());
 
 //Back end APIis sered on the /api route
 app.use('/api', api);
-app.use('/auth', auth)
+//app.use('/auth', auth)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
