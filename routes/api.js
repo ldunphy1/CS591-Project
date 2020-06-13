@@ -16,16 +16,23 @@ const db = mongoose.connection
 //uses Spoonacular API to return recipes to use in the form of a JSON object
 /*
  **SAMPLE RESPONSE**
- {"count":30,
- "recipes":[{
- "publisher":"The Pioneer Woman",
- "f2f_url":"http://food2fork.com/view/47024",
- "title":"Perfect Iced Coffee",
- "source_url":"http://thepioneerwoman.com/cooking/2011/06/perfect-iced-coffee/",
- "recipe_id":"47024",
- "image_url":"http://static.food2fork.com/icedcoffee5766.jpg",
- "social_rank":100,
- "publisher_url":"http://thepioneerwoman.com"}, ...]}
+    {results":
+    [{
+        "id": 723984,
+        "title": "Cabbage Salad with Peanuts",
+        "readyInMinutes": 15,
+        "servings": 2,
+        "sourceUrl": "http://naturallyella.com/cabbage-salad-with-peanuts/",
+        "openLicense": 0,
+        "image": "cabbage-salad-with-peanuts-723984.jpg"
+    ]}
+    "baseUri": "https://spoonacular.com/recipeImages/",
+    "offset": 0,
+    "number": 10,
+    "totalResults": 367543,
+    "processingTimeMs": 283,
+    "expires": 1592126158122,
+    "isStale": false
  */
 router.post('/getRecipes', authorized, function (req, res, next) {
     const options = {
@@ -43,17 +50,18 @@ router.post('/getRecipes', authorized, function (req, res, next) {
         const recipeLinks = []
 
         //check for no results
-        if (recipeList.count == 0) {
+        if (recipeList.number == 0) {
             res.json({message: "No results"})
         }
         else {
             //iterate through recipes, adds title & source url to recipeLinks array
-            recipeList.recipes.forEach(function (recipe) {
-                recipeLinks.push({title: recipe.title, url: recipe.source_url})
+            /* recipeList.results.forEach(function (recipe) {
+                recipeLinks.push({title: recipe.title, url: recipe.sourceUrl})
             })
 
             //send recipe info to front end
-            res.json(recipeLinks)
+            res.json(recipeLinks) */
+            console.log(body)
         }
     });
 })
