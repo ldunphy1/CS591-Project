@@ -36,13 +36,13 @@ const db = mongoose.connection
  */
 router.post('/getRecipes', authorized, function (req, res, next) {
     const options = {
-        method: 'POST',
-        url: 'https://api.spoonacular.com/recipes/search',
-        form: {
-            key: FFKEY.key,         //API key
+        //method: 'POST',
+        url: 'https://api.spoonacular.com/recipes/search?apiKey=64d8e39ed9db4ab486d3ce136d1ccea3',
+        /* form: {
+            key: FFKEY.apiKey,         //API key
             page: req.body.page,    //indicates page # of results (either 1 or 2)
             q: req.body.q           //(optional) if omitted, top-rated results will be returned
-        }
+        } */
     };
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
@@ -55,13 +55,13 @@ router.post('/getRecipes', authorized, function (req, res, next) {
         }
         else {
             //iterate through recipes, adds title & source url to recipeLinks array
-            /* recipeList.results.forEach(function (recipe) {
+            recipeList.results.forEach(function (recipe) {
                 recipeLinks.push({title: recipe.title, url: recipe.sourceUrl})
             })
 
             //send recipe info to front end
-            res.json(recipeLinks) */
-            console.log(body)
+            res.json(recipeLinks)
+            //console.log(body)
         }
     });
 })
